@@ -1,12 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="{% url 'leads:lead_detail' lead.pk %}"> Back to lead {{lead.first_name}} {{lead.last_name}} detail page </a>
-    <h1>update the lead {{lead.first_name}} {{lead.last_name}}</h1>
-    <form method="post" action=".">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-    </form>
-
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <a href="{% url 'leads:leads_list' %}" class="btn btn-outline-secondary mb-5 flex-shrink-0">
+      Back to lead</a>
+  </div>
+<div class="row d-flex justify-content-center">
+<div class="col-md-6">
+<div class="card shadow-sm">
+<article class="card-body mx-auto">
+<h4 class="card-title mt-3 text-center">Update Lead</h4>
+<p class="text-center mb-4">Use This form to update the lead information</p>
+<form method="post" action=".">
+  {% csrf_token %}
+  {{ form.as_p }}
+<div class="form-group">
+    <button type="submit" class="btn btn-primary btn-block"> Update </button>
+</div>
+</form>
+</article>
+</div>
+</div>
+</div>
+</div>
 {% endblock content %}

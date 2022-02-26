@@ -1,7 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 from .models import Lead, Agent
 from .forms import LeadForm
+
+
+# Using class based views
+class LandingPageView(TemplateView):
+    template_name = 'landing_page.html'
 
 
 def landing_page(request):
