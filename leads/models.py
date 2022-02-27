@@ -1,10 +1,18 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
 
 # we use abstract user model from django so we have more flexibility if we want to change the user model
 class User(AbstractUser):
     pass
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
 
 
 # create a database table that will hold the leads information
@@ -24,23 +32,19 @@ class Agent(models.Model):
     # we use OneToOneField to create one to one relationship with the User model
     # This way we can make sure that the agent is only one user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
 
-# --------------------------- different types of models entries ----------------------------#
-# # check if they have phone number
-# Is_phone_number = models.BooleanField(default=False)
-#
-# # the source from which the lead came
-# LEAD_SOURCES = (
-#     ('Youtube', 'Youtube'),
-#     ('Facebook', 'Facebook'),
-#     ('Instagram', 'Instagram'),
-#     ('Twitter', 'Twitter'),
-#     ('Google', 'Google'),
-#     ('Other', 'Other'),
-# )
-# lead_source = models.CharField(choices=LEAD_SOURCES, max_length=50)
-# profile_image = models.ImageField(blank=True, null=True)
-# additional_files = models.FileField(blank=True, null=True)
+
+def post_user_created_signal(sender, instance, created, *args, **kwargs):
+    # instance: the user instance name
+    # created: boolean value that tells us if the user was created or not at the moment of signal sending
+    # sender: the sender of the signal
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+# django is listening for the user model to send event (saved) then use the function to handle the event
+post_save.connect(post_user_created_signal, sender=User)

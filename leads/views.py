@@ -1,5 +1,6 @@
 from django.shortcuts import render, reverse
 from django.core.mail import send_mail
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
 from .forms import LeadForm, CustomUserCreationForm
@@ -20,7 +21,7 @@ class LandingPageView(TemplateView):
 
 
 # Using class based views to create a list of leads page
-class LeadListView(ListView):
+class LeadListView(LoginRequiredMixin, ListView):
     template_name = 'leads/leads_list.html'
     queryset = Lead.objects.all()
     # the model is assigned to the context with a key of 'object_list'
@@ -29,14 +30,14 @@ class LeadListView(ListView):
 
 
 # Using class based views to create a detail page for a lead
-class LeadDetailView(DetailView):
+class LeadDetailView(LoginRequiredMixin, DetailView):
     template_name = 'leads/lead_detail.html'
     queryset = Lead.objects.all()
     context_object_name = 'lead'
 
 
 # Using class based views to create a create page for a lead
-class LeadCreateView(CreateView):
+class LeadCreateView(LoginRequiredMixin, CreateView):
     template_name = 'leads/lead_create.html'
     form_class = LeadForm
 
@@ -54,7 +55,7 @@ class LeadCreateView(CreateView):
 
 
 # Using class based views to create an update page for a lead
-class LeadUpdateView(UpdateView):
+class LeadUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'leads/lead_update.html'
     queryset = Lead.objects.all()
     form_class = LeadForm
@@ -64,7 +65,7 @@ class LeadUpdateView(UpdateView):
 
 
 # Using class based views to create a delete page for a lead
-class LeadDeleteView(DeleteView):
+class LeadDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'leads/lead_delete.html'
     queryset = Lead.objects.all()
 
