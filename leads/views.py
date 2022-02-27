@@ -1,74 +1,72 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.shortcuts import render, reverse
+from django.core.mail import send_mail
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
-from .forms import LeadForm
+from .forms import LeadForm, CustomUserCreationForm
 
 
-# Using class based views
+#  create sign up view
+class SignupView(CreateView):
+    template_name = 'registration/signup.html'
+    form_class = CustomUserCreationForm
+
+    def get_success_url(self):
+        return reverse('login')
+
+
+# Using class based views to create a landing page
 class LandingPageView(TemplateView):
     template_name = 'landing_page.html'
 
 
-def landing_page(request):
-    return render(request, 'landing_page.html')
+# Using class based views to create a list of leads page
+class LeadListView(ListView):
+    template_name = 'leads/leads_list.html'
+    queryset = Lead.objects.all()
+    # the model is assigned to the context with a key of 'object_list'
+    # if we want to change the key, we can do so by passing a context_object_name
+    context_object_name = 'leads'
 
 
-def show_leads_list(request):
-    # get all leads information as queryset
-    leads = Lead.objects.all()
-    context = {
-        'leads': leads
-    }
-    return render(request, 'leads/leads_list.html', context)
+# Using class based views to create a detail page for a lead
+class LeadDetailView(DetailView):
+    template_name = 'leads/lead_detail.html'
+    queryset = Lead.objects.all()
+    context_object_name = 'lead'
 
 
-# view lead details
-def lead_detail(request, pk):
-    # get lead information by primary key
-    lead = Lead.objects.get(pk=pk)
-    context = {
-        'lead': lead
-    }
-    return render(request, 'leads/lead_detail.html', context)
+# Using class based views to create a create page for a lead
+class LeadCreateView(CreateView):
+    template_name = 'leads/lead_create.html'
+    form_class = LeadForm
+
+    def get_success_url(self):
+        return reverse('leads:leads_list')
+
+    def form_valid(self, form):
+        send_mail(
+            subject='New Lead Created',
+            message="Check out this new lead!",
+            from_email="test@test.com",
+            recipient_list=["me@mail.com"]
+        )
+        return super(LeadCreateView, self).form_valid(form)
 
 
-# create a new lead
-def lead_create(request):
-    form = LeadForm(request.POST or None)
+# Using class based views to create an update page for a lead
+class LeadUpdateView(UpdateView):
+    template_name = 'leads/lead_update.html'
+    queryset = Lead.objects.all()
+    form_class = LeadForm
 
-    # if form is valid and request is submitted then save new lead to database
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('/leads')
-
-    context = {
-        'form': LeadForm()
-    }
-    return render(request, 'leads/lead_create.html', context)
+    def get_success_url(self):
+        return reverse('leads:lead_detail')
 
 
-# update lead information
-def lead_update(request, pk):
-    # get lead information by primary key
-    lead = Lead.objects.get(pk=pk)
-    form = LeadForm(request.POST or None, instance=lead)
+# Using class based views to create a delete page for a lead
+class LeadDeleteView(DeleteView):
+    template_name = 'leads/lead_delete.html'
+    queryset = Lead.objects.all()
 
-    # if form is valid and request is submitted then update lead information
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('/leads')
-
-    context = {
-        'form': form,
-        'lead': lead,
-    }
-    return render(request, 'leads/lead_update.html', context)
-
-
-# delete lead
-def lead_delete(request, pk):
-    # get lead information by primary key
-    lead = Lead.objects.get(pk=pk)
-    lead.delete()
-    return redirect('/leads')
+    def get_success_url(self):
+        return reverse('leads:leads_list')

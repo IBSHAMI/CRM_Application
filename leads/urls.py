@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import show_leads_list, lead_detail, lead_create, lead_update, lead_delete
+from .views import LeadCreateView, LeadUpdateView, LeadListView, LeadDetailView, LeadDeleteView
 
 app_name = 'leads'
 
 urlpatterns = [
-    path('', show_leads_list, name='leads_list'),
-    path('<int:pk>/', lead_detail, name='lead_detail'),
-    path('<int:pk>/update/', lead_update, name='lead_update'),
-    path('<int:pk>/delete/', lead_delete, name='lead_delete'),
-    path('create/', lead_create, name='lead_create'),
+    path('', LeadListView.as_view(), name='leads_list'),
+    path('<int:pk>/', LeadDetailView.as_view(), name='lead_detail'),
+    path('<int:pk>/update/', LeadUpdateView.as_view(), name='lead_update'),
+    path('<int:pk>/delete/', LeadDeleteView.as_view(), name='lead_delete'),
+    path('create/', LeadCreateView.as_view(), name='lead_create'),
 ]
