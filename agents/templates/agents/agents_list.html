@@ -5,7 +5,7 @@
 <div class="container px-4 py-5" id="hanging-icons">
   <div class="d-flex justify-content-between list-inline">
     <h3 class="list-inline-item">Agents List</h3>
-    <a href="{% url 'leads:lead_create' %}" class="btn btn-outline-secondary list-inline-item">
+    <a href="{% url 'agents:agents_create' %}" class="btn btn-outline-secondary list-inline-item">
       Create Agent</a>
   </div>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
@@ -15,9 +15,9 @@
           <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
         </div>
         <div>
-          <h3>{{ Agent.user.username }}</h2>
+          <h3>{{ agent.user.username }}</h2>
           <p class="py-1 text-right">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="{% url 'leads:lead_detail' lead.pk %}" class="btn btn-primary">
+          <a href="{% url 'agents:agent_detail' agent.pk %}" class="btn btn-primary">
             Agent Details
           </a>
         </div>

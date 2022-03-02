@@ -7,3 +7,5 @@ V
 &leads/templates/leads/lead_detail.html,a\e\aee07bddb89fdb77828ccc24a6ea837cd636dffe
 V
 &leads/templates/leads/lead_create.html,7\b\7b6711e197b2621213de4f6b55245659a853aa0f
+E
+templates/navbar.html,2\1\2152ecc432cb8e2a5acad94785c9a8c5a8df8cac
