@@ -25,6 +25,28 @@
         </div>
       </div>
       {% endfor %}
+      </div>
+
+      {% if unassigned_leads.exists %}
+      <div class="d-flex justify-content-between list-inline">
+        <h3 class="list-inline-item">Unassigned Leads List</h3>
+      </div>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+          {% for lead in unassigned_leads %}
+          <div class="w-25 col d-flex align-items-start p-2">
+            <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
+              <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
+            </div>
+            <div>
+              <h3>{{ lead.first_name }} {{ lead.last_name }}</h2>
+              <p class="py-1 text-right">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+              <a href="{% url 'leads:assign_agent' lead.pk %}" class="btn btn-primary">
+                Assign Agent
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
     </div>
-  </div>
 {% endblock content %}

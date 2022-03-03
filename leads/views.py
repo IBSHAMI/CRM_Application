@@ -1,9 +1,17 @@
 from django.shortcuts import render, reverse
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    FormView,
+)
 from .models import Lead, Agent
-from .forms import LeadForm, CustomUserCreationForm
+from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm
 from agents.mixins import OrganizerAndLoginRequiredMixin
 
 
@@ -34,12 +42,24 @@ class LeadListView(LoginRequiredMixin, ListView):
         # otherwise the user is an agent then we acess the user agent then user profile
         # then filter the leads based on the specific agent
         if user.is_organizer:
-            queryset = Lead.objects.filter(organization=user.organization)
+            queryset = Lead.objects.filter(organization=user.organization, agent__isnull=False)
         else:
-            queryset = Lead.objects.filter(organization=user.agent.organization)
+            queryset = Lead.objects.filter(organization=user.agent.organization, agent__isnull=False)
             queryset = queryset.filter(agent__user=user)
         return queryset
 
+    # override the get_context_data method to add the user to the context
+    def get_context_data(self, **kwargs):
+        # get the already existing context data
+        context = super(LeadListView, self).get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_organizer:
+            # filter queryset based on organization and is_null
+            queryset = Lead.objects.filter(organization=user.organization, agent__isnull=True)
+            context.update({
+                "unassigned_leads": queryset
+            })
+        return context
 
 # Using class based views to create a detail page for a lead
 class LeadDetailView(LoginRequiredMixin, DetailView):
@@ -109,3 +129,25 @@ class LeadDeleteView(OrganizerAndLoginRequiredMixin, DeleteView):
         # then filter the leads based on the specific agent
         queryset = Lead.objects.filter(organization=user.organization)
         return queryset
+
+
+# Agent assign view
+class AssignAgentView(OrganizerAndLoginRequiredMixin, FormView):
+    template_name = 'leads/assign_agent.html'
+    form_class = AssignAgentForm
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(AssignAgentView, self).get_form_kwargs(**kwargs)
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('leads:leads_list')
+
+    def form_valid(self, form):
+        agent = form.cleaned_data['agent']
+        lead = Lead.objects.get(pk=self.kwargs['pk'])
+        lead.agent = agent
+        lead.save()
+        return super(AssignAgentView, self).form_valid(form)
+
