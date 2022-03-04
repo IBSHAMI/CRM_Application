@@ -1,11 +1,20 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
-    <a href="{% url 'leads:leads_list' %}"> Back to leads page </a>
-    <h1>create a new lead</h1>
-    <form method="post" action=".">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+    <h2 class="text-center py-3">create a new lead</h2>
+    <div class="d-flex p-5 justify-content-center">
+      <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-outline-primary my-3 w-50">Submit</button>
+      <hr />
+      <div>
+          <a href="{% url 'leads:leads_list' %}" class="w-100 btn btn-outline-secondary">Back to leads page</a>
+      </div>
+      </form>
+      </div>
+      </div>
 {% endblock content %}

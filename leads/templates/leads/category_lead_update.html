@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
+
 {% block content %}
 <div class="container">
-  <div class="d-flex justify-content-center pt-3">
+  <div class="d-flex justify-content-center">
     <a href="{% url 'leads:leads_list' %}" class="btn btn-outline-secondary mb-5 flex-shrink-0">
       Back to lead</a>
   </div>
@@ -11,13 +12,13 @@
 <div class="col-md-6">
 <div class="card shadow-sm">
 <article class="card-body mx-auto">
-<h4 class="card-title mt-3 text-center">Update Lead</h4>
-<p class="text-center mb-4">Use This form to update the lead information</p>
+<h4 class="card-title mt-3 text-center">Update Lead Category</h4>
+<p class="text-center mb-4">Use This form to update the lead Category class.</p>
 <form method="post" action=".">
   {% csrf_token %}
   {{ form|crispy }}
-<div class="form-group py-3">
-    <button type="submit" class="btn btn-primary btn-block w-25"> Update </button>
+<div class="form-group py-4">
+    <button type="submit" class="btn btn-primary btn-block w-50"> Update </button>
 </div>
 </form>
 </article>

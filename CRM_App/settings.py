@@ -25,8 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'leads',
-    'agents'
+    'agents',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'leads:leads_list'
 LOGOUT_REDIRECT_URL = 'landing_page'
 LOGIN_URL = 'login'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

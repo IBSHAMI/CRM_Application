@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
 <div class="container">
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center pt-3">
     <a href="{% url 'agents:agents_list' %}" class="btn btn-outline-secondary mb-5 flex-shrink-0">
       Back to Agents list</a>
   </div>
@@ -14,8 +16,8 @@
 <p class="text-center mb-4">Use This form to update the Agent information</p>
 <form method="post" action=".">
   {% csrf_token %}
-  {{ form.as_p }}
-<div class="form-group">
+  {{ form|crispy }}
+<div class="form-group py-3">
     <button type="submit" class="btn btn-primary btn-block"> Update </button>
 </div>
 </form>
