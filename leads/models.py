@@ -25,7 +25,11 @@ class Lead(models.Model):
     # set agent default to null so we can assign it later
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     agent = models.ForeignKey('Agent', null=True, blank=True, on_delete=models.SET_NULL)
-    category = models.ForeignKey('Category',related_name='leads', null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey('Category', related_name='leads', null=True, blank=True, on_delete=models.SET_NULL)
+    description = models.TextField(max_length=500)
+    date_added = models.DateTimeField(auto_now_add=True)
+    phone = models.CharField(max_length=50)
+    email = models.EmailField()
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -58,7 +62,7 @@ def post_user_created_signal(sender, instance, created, *args, **kwargs):
     # instance: the user instance name
     # created: boolean value that tells us if the user was created or not at the moment of signal sending
     # sender: the sender of the signal
-    if created:
+    if created and not instance.is_agent:
         Organization.objects.create(user=instance)
 
 

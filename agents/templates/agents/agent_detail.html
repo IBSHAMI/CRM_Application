@@ -1,22 +1,23 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
+<section class="py-5">
 
 <section class="py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <a href="{% url 'agents:agents_list' %}" class="btn btn-outline-secondary mb-5 flex-shrink-0"> Back to Agents page</a>
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..."></div>
+                    <div class="col-md-6"><img src="{% static 'images/agent_pic.jpg'%}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="600" height="700" loading="lazy"></div>
                     <div class="col-md-6">
-                        <div class="small mb-1">Agent Details</div>
-                        <h1 class="display-5 fw-bolder">{{ agent.user.username }}</h1>
-                        <div class="fs-5">
-                            <span>Date_joined: {{agent.user.date_joined}}</span>
+                        <div class="fw-bold fs-2 text-center mb-3 pb-3">Agent Details</div>
+                        <h1 class="display-5 fs-5 fw-normal">Agent username: {{ agent.user.username }}</h1>
+                        <h1 class="display-5 fs-5 fw-normal">Agent organization: {{ agent.organization }}</h1>
+                        <div class="display-5 fs-5 fw-normal">
+                            <span>Agent email: {{agent.user.email}}</span>
                         </div>
-                        <div class="fs-5 mb-3">
-                            <span>Agent Organization: {{ agent.organization }}</span>
-                        </div>
-                        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
+                        <p class="lead my-2 fs-6 fst-italic pb-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
                         <div class="d-flex">
                           <a href="{% url 'agents:agent_update' agent.pk %}" class="btn btn-primary flex-shrink-0">
                               Update Agent

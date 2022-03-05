@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from .models import Lead, User, Agent
+from .models import Lead, User, Agent, Category
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -18,6 +18,9 @@ class LeadForm(forms.ModelForm):
             'last_name',
             'age',
             'agent',
+            'description',
+            'phone',
+            'email',
         )
 
 
@@ -36,4 +39,13 @@ class CategoryLeadUpdateForm(forms.ModelForm):
         model = Lead
         fields = (
             'category',
+        )
+
+
+# create new category by organizer
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = (
+            'name',
         )

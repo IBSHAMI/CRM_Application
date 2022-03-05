@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
+{% load static%}
 
 {% block content %}
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
       <div class="col-10 col-sm-8 col-lg-6">
-        <img src="bootstrap-themes.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+        <img src="{% static 'images/personal-crm.webp'%}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
       </div>
       <div class="col-lg-6">
         <h1 class="display-4 fw-bold lh-1 mb-3">CRM-APP</h1>
         <p class="lead">This is Customer Relationship Management Software (CRM) Web App built with Python (Django)</p>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'leads:leads_list' %}" class="btn btn-lg btn-primary">Go to Leads</a>
+        {% else %}
         <div class="d-grid gap- d-md-flex justify-content-md-start">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Sign up</button>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Login</button>
+          <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4 me-md-2">Login</a>
+          <a href="{% url 'signup' %}" class="btn btn-outline-secondary btn-lg px-4 ">Sign up</a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

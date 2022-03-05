@@ -11,7 +11,7 @@ from django.views.generic import (
     FormView,
 )
 from .models import Lead, Agent, Category
-from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryLeadUpdateForm
+from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryLeadUpdateForm, CategoryForm
 from agents.mixins import OrganizerAndLoginRequiredMixin
 
 
@@ -237,3 +237,19 @@ class CategoryLeadUpdateView(LoginRequiredMixin, UpdateView):
             queryset = Lead.objects.filter(organization=user.agent.organization)
             queryset = queryset.filter(agent__user=user)
         return queryset
+
+
+# create new category
+class CategoryCreateView(OrganizerAndLoginRequiredMixin, CreateView):
+    template_name = 'leads/category_create.html'
+    form_class = CategoryForm
+
+    def get_success_url(self):
+        return reverse('leads:category_list')
+
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        category.organization = self.request.user.organization
+        category.save()
+        return super(CategoryCreateView, self).form_valid(form)
+

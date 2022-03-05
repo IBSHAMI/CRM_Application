@@ -1,22 +1,33 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
-
 <section class="py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <a href="{% url 'leads:leads_list' %}" class="btn btn-outline-secondary mb-5 flex-shrink-0"> Back to leads page</a>
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..."></div>
+                    <div class="col-md-6"><img src="{% static 'images/lead_pic.jpg'%}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="600" height="700" loading="lazy"></div>
                     <div class="col-md-6">
-                        <div class="small mb-1">Lead Details</div>
-                        <h1 class="display-5 fw-bolder">{{lead.first_name}} {{lead.last_name}}</h1>
-                        <div class="fs-5">
-                            <span>Age: {{lead.age}}</span>
+                        <div class="fw-bold fs-2 text-center mb-3 pb-3">Lead Details</div>
+                        <div>
+                            <div class="display-5 fs-4 fw-normal">
+                                <span>Lead name: {{lead.first_name}} {{lead.last_name}}</span>
+                            </div>
+                            <div class="display-5 fs-6 fw-normal py-2">
+                                <span>Age: {{lead.age}}</span>
+                            </div>
+                            <div class="display-5 fs-6 fw-normal py-2">
+                                <span>phone number: {{lead.phone}} </span>
+                            </div>
+                            <div class="display-5 fs-6 fw-normal py-2">
+                                <span>email: {{lead.email}} </span>
+                            </div>
+                            <div class="display-5 fs-6 fw-normal py-2">
+                                <span>Date added: {{lead.date_added}} </span>
+                            </div>
                         </div>
-                        <div class="fs-5 mb-3">
-                            <span>Agent: {{lead.agent}}</span>
-                        </div>
-                        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
+                        <p class="lead my-2 fs-6 fst-italic pb-3">{{ lead.description }}</p>
                         <div class="d-flex">
                           <a href="{% url 'leads:lead_update' lead.pk %}" class="btn btn-primary flex-shrink-0">
                               Update Lead

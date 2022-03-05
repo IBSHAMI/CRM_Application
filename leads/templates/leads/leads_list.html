@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
-
-<div class="container px-4 py-5" id="hanging-icons">
+<div class="container px-4 py-5 w-100" id="hanging-icons">
   <div class="d-flex justify-content-between list-inline">
     <h3 class="list-inline-item">Leads List</h3>
     {% if request.user.is_organizer %}
@@ -12,43 +13,81 @@
       Create Lead</a>
     {% endif %}
   </div>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
-      {% for lead in leads %}
-      <div class="w-25 col d-flex align-items-start p-2">
-        <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
-        </div>
-        <div>
-          <h3>{{ lead.first_name }} {{ lead.last_name }}</h2>
-          <p class="py-1 text-right">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="{% url 'leads:lead_detail' lead.pk %}" class="btn btn-primary">
-            Lead Details
-          </a>
-        </div>
-      </div>
-      {% endfor %}
-      </div>
+  <hr/>
+  <div class="container py-2">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+            <table class="table table-striped table-hover table-bordered my-4">
+              <thead>
+                <tr>
+                  <th class="fw-normal text-uppercase" scope="col">First name</th>
+                  <th class="fw-normal text-uppercase" scope="col">Last name</th>
+                  <th class="fw-normal text-uppercase" scope="col">Age</th>
+                  <th class="fw-normal text-uppercase" scope="col">Email</th>
+                  <th class="fw-normal text-uppercase" scope="col">Phone Number</th>
+                  <th class="fw-normal text-uppercase" scope="col">Category</th>
+                  <th class="fw-normal text-uppercase" scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for lead in leads %}
+                <tr>
+                  <th class="fw-normal" scope="row">{{ lead.first_name }}</th>
+                  <td class="fw-normal" >{{ lead.last_name }}</td>
+                  <td class="fw-normal" >{{ lead.age }}</td>
+                  <td class="fw-normal" >{{ lead.email }}</td>
+                  <td class="fw-normal" >{{ lead.phone }}</td>
+                  <td class="fw-normal" ><a href="{% url 'leads:category_lead_update' lead.pk %}">{{ lead.category }}</a></td>
+                  <td class="fw-normal">
+                    <a href="{% url 'leads:lead_detail' lead.pk %}" class="btn btn-outline-secondary">
+                      Lead Details
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+    </div>
+  </div>
 
-      {% if unassigned_leads.exists %}
-      <div class="d-flex justify-content-between list-inline">
+ {% if unassigned_leads.exists %}
+      <div class="d-flex justify-content-between list-inline mt-5">
         <h3 class="list-inline-item">Unassigned Leads List</h3>
       </div>
-        <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
-          {% for lead in unassigned_leads %}
-          <div class="w-25 col d-flex align-items-start p-2">
-            <div class="icon-square bg-light text-dark flex-shrink-0 me-3">
-              <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
-            </div>
-            <div>
-              <h3>{{ lead.first_name }} {{ lead.last_name }}</h2>
-              <p class="py-1 text-right">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-              <a href="{% url 'leads:assign_agent' lead.pk %}" class="btn btn-primary">
-                Assign Agent
-              </a>
-            </div>
-          </div>
-        {% endfor %}
-        </div>
-      {% endif %}
+  <hr/>
+<div class="container pt-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+
+            <table class="table table-striped table-hover table-bordered mt-2">
+              <thead>
+                <tr>
+                  <th class="fw-normal text-uppercase" scope="col">First name</th>
+                  <th class="fw-normal text-uppercase" scope="col">Last name</th>
+                  <th class="fw-normal text-uppercase" scope="col">Age</th>
+                  <th class="fw-normal text-uppercase" scope="col">Email</th>
+                  <th class="fw-normal text-uppercase" scope="col">Phone Number</th>
+                  <th class="fw-normal text-uppercase" scope="col">Category</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for lead in unassigned_leads %}
+                <tr>
+                  <th class="fw-normal" scope="row">{{ lead.first_name }}</th>
+                  <td class="fw-normal" >{{ lead.last_name }}</td>
+                  <td class="fw-normal" >{{ lead.age }}</td>
+                  <td class="fw-normal" >{{ lead.email }}</td>
+                  <td class="fw-normal" >{{ lead.phone }}</td>
+                  <td class="fw-normal" >{{ lead.category }}</td>
+                  <td class="fw-normal">
+                    <a href="{% url 'leads:assign_agent' lead.pk %}" class="btn btn-outline-secondary">
+                      Assign Agent
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
     </div>
+  </div>
+{% endif %}
+</div>
 {% endblock content %}
