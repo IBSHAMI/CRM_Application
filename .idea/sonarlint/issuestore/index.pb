@@ -2,8 +2,6 @@
 ?
 agents/tests.py,1\0\10b3a11b1c3d9107391d72e05f8cc86638f88e11
 @
-agents/mixins.py,8\3\8312954237db13fd762a040a6d7b0df6181a247c
-@
 agents/models.py,b\5\b5f00d6c96513bb95303428197e162f398d9d0a1
 ?
 agents/forms.py,2\4\24f98107e8da58d05de5ee92fda3682bf57ef9d0
@@ -15,8 +13,6 @@ P
  leads/migrations/0001_initial.py,d\8\d860b245094768314cdbad5a754cf71ad99cedb0
 Z
 *leads/templates/leads/category_detail.html,8\8\88c793ea67e4d472d702eff543d7285b1bf964bf
-E
-templates/navbar.html,2\1\2152ecc432cb8e2a5acad94785c9a8c5a8df8cac
 W
 'static/images/menu-button-wide-fill.svg,f\b\fb08484ebe2653056ab1d97f8d30e32ea75ee5c3
 Y
@@ -27,7 +23,5 @@ Z
 *leads/templates/leads/category_create.html,c\7\c7775df98fac5dd33eef99471766e9a4f3e46399
 \
 ,leads/migrations/0002_alter_category_name.py,3\6\36bfd394ccaa1ebadfb28743fa3beb6ec42b45e6
-K
-templates/landing_page.html,2\c\2cd4352cb2756b0ecf75e0ec4a1b74fcbe567463
 W
 'leads/templates/leads/assign_agent.html,b\b\bb5addaef3d9261f5e0c0b9cf917660f3efe80d2

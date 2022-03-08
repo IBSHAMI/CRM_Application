@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static%}
 
-</body>
-</html>
+{% block content %}
+<div class="container px-4 pt-5 pb-2 w-100">
+  <div class="d-flex justify-content-center list-inline py-5">
+    <h3 class="list-inline-item fst-italic">CRM-App Dashboard</h3>
+  </div>
+</div>
+<div class="py-1">
+    <div class="container">
+      <div class="row hidden-md-up">
+        <div class="col-md-4">
+          <div class="card p-3">
+            <div class="card-block">
+              <h4 class="card-title text-center pb-1">Leads Added</h4>
+              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
+              <a href="#" class="card-link">Second link</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3">
+            <div class="card-block">
+              <h4 class="card-title text-center pb-1">Leads Converted</h4>
+              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
+              <a href="#" class="card-link">Second link</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3">
+            <div class="card-block">
+              <h4 class="card-title text-center pb-1">Total Leads</h4>
+              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
+              <a href="#" class="card-link">Second link</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

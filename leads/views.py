@@ -1,4 +1,5 @@
-from django.shortcuts import render, reverse
+import datetime
+from django.shortcuts import render, reverse, redirect
 from django.core.mail import send_mail
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,11 +31,42 @@ class SignupView(CreateView):
 class LandingPageView(TemplateView):
     template_name = 'landing_page.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
 
 # Dashboard view
 # for non admin the custom OrganizerAndLoginRequiredMixin is used to redirect them to leads list
 class DashboardView(OrganizerAndLoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(DashboardView, self).get_context_data(**kwargs)
+    #
+    #     user = self.request.user
+    #
+    #     # total number of leads
+    #     total_num_leads = Lead.objects.filter(organization=user.organization).count()
+    #
+    #     # total number of leads assigned added in the last month
+    #     month_ago = datetime.date.today() - datetime.timedelta(days=30)
+    #     last_month_leads = Lead.objects.filter(
+    #         organization=user.organization,
+    #         date_added__gte=month_ago
+    #     ).count()
+    #
+    #     # total number of leads converted in the last month
+    #     converted_categories = Category.objects.filter(
+    #         organization=user.organization,
+    #         name='Converted'
+    #     )
+    #     last_month_converted_leads = Lead.objects.filter(
+    #         organization=user.organization,
+    #         date_added__gte=month_ago,
+    #         category='Converted',
+    #     ).count()
 
 
 # Using class based views to create a list of leads page
