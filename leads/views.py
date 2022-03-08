@@ -1,5 +1,6 @@
 from django.shortcuts import render, reverse
 from django.core.mail import send_mail
+from django.http.response import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     TemplateView,
@@ -9,6 +10,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     FormView,
+    View,
 )
 from .models import Lead, Agent, Category
 from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryLeadUpdateForm, CategoryForm
@@ -219,6 +221,7 @@ class CategoryDetailView(LoginRequiredMixin, DetailView):
 
         return queryset
 
+
 class CategoryLeadUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'leads/category_lead_update.html'
     form_class = CategoryLeadUpdateForm
@@ -253,3 +256,10 @@ class CategoryCreateView(OrganizerAndLoginRequiredMixin, CreateView):
         category.save()
         return super(CategoryCreateView, self).form_valid(form)
 
+
+# return data as a json data
+class LeadListJsonView(View):
+
+    def get(self, request, *args, **kwargs):
+        queryset = list(Lead.objects.filter(organization=self.request.user.organization).values())
+        return JsonResponse({"data": queryset})

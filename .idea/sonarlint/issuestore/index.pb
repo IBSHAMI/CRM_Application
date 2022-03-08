@@ -11,8 +11,6 @@
 agents/models.py,b\5\b5f00d6c96513bb95303428197e162f398d9d0a1
 ?
 agents/forms.py,2\4\24f98107e8da58d05de5ee92fda3682bf57ef9d0
-?
-agents/views.py,b\9\b9dc8abc63e77c208cb75a313ad45d3d780c7d87
 >
 agents/urls.py,4\e\4e0029cb9a87f45f13a858273280f11f6c350e0d
 _
@@ -35,10 +33,6 @@ X
 (agents/templates/agents/agents_list.html,7\0\7046c627f79ed6136a4a2168fa0db48c00886075
 E
 templates/navbar.html,2\1\2152ecc432cb8e2a5acad94785c9a8c5a8df8cac
-=
-leads/urls.py,1\c\1cc6799cf7070f080bdbdcd4202c3df32eb8d335
->
-leads/views.py,6\8\685c04927345d7996763fbcabeb7ca1346c27be1
 W
 'static/images/menu-button-wide-fill.svg,f\b\fb08484ebe2653056ab1d97f8d30e32ea75ee5c3
 Y
@@ -53,3 +47,5 @@ K
 templates/landing_page.html,2\c\2cd4352cb2756b0ecf75e0ec4a1b74fcbe567463
 W
 'leads/templates/leads/assign_agent.html,b\b\bb5addaef3d9261f5e0c0b9cf917660f3efe80d2
+@
+requirements.txt,1\9\19359a61ae2446b51b549167b014da2fcf265768

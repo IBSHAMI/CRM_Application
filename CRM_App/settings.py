@@ -10,7 +10,7 @@ BASE_DIR_ENV = os.path.join(Path(__file__).resolve().parent.parent, 'CRM_App')
 
 
 READ_DOT_ENV_FILE = env.bool("READ_DOT_ENV_FILE", default=False)
-if READ_DOT_ENV_FILE:
+if not READ_DOT_ENV_FILE:
     environ.Env.read_env(os.path.join(BASE_DIR_ENV, '.env'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -74,7 +74,15 @@ WSGI_APPLICATION = 'CRM_App.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+elif not DEBUG :
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': env('DB_NAME'),
