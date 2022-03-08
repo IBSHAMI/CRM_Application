@@ -12,8 +12,8 @@ from django.views.generic import (
     FormView,
     View,
 )
-from .models import Lead, Agent, Category
-from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryLeadUpdateForm, CategoryForm
+from .models import Lead, Agent, Category, FollowUp
+from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryLeadUpdateForm, CategoryForm, FollowUpForm
 from agents.mixins import OrganizerAndLoginRequiredMixin
 
 
@@ -29,6 +29,12 @@ class SignupView(CreateView):
 # Using class based views to create a landing page
 class LandingPageView(TemplateView):
     template_name = 'landing_page.html'
+
+
+# Dashboard view
+# for non admin the custom OrganizerAndLoginRequiredMixin is used to redirect them to leads list
+class DashboardView(OrganizerAndLoginRequiredMixin, TemplateView):
+    template_name = 'dashboard.html'
 
 
 # Using class based views to create a list of leads page
@@ -263,3 +269,62 @@ class LeadListJsonView(View):
     def get(self, request, *args, **kwargs):
         queryset = list(Lead.objects.filter(organization=self.request.user.organization).values())
         return JsonResponse({"data": queryset})
+
+
+# create new follow up
+class FollowUpLeadCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'leads/follow_up_create.html'
+    form_class = FollowUpForm
+
+    def get_success_url(self):
+        return reverse('leads:lead_detail', kwargs={'pk': self.kwargs["pk"]})
+
+    def get_context_data(self, **kwargs):
+        context = super(FollowUpLeadCreateView, self).get_context_data(**kwargs)
+        context.update({
+            "lead": Lead.objects.get(pk=self.kwargs["pk"]),
+        })
+        return context
+
+    def form_valid(self, form):
+        lead = Lead.objects.get(pk=self.kwargs["pk"])
+        followup = form.save(commit=False)
+        followup.lead = lead
+        followup.save()
+        return super(FollowUpLeadCreateView, self).form_valid(form)
+
+
+class FollowUpdateLeadView(LoginRequiredMixin, UpdateView):
+    template_name = 'leads/follow_up_update.html'
+    form_class = FollowUpForm
+    context_object_name = 'followup'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = FollowUp.objects.filter(lead__organization=user.organization)
+        else:
+            queryset = FollowUp.objects.filter(lead__organization=user.agent.organization)
+            queryset = queryset.filter(lead__agent__user=user)
+        return queryset
+
+    def get_success_url(self):
+        return reverse('leads:lead_detail', kwargs={'pk': self.get_object().lead.pk})
+
+
+# followup Delete View
+class FollowUpDeleteViewView(LoginRequiredMixin, DeleteView):
+    template_name = 'leads/follow_up_delete.html'
+    context_object_name = 'followup'
+
+    def get_success_url(self):
+        return reverse('leads:lead_detail', kwargs={'pk': self.get_object().lead.pk})
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = FollowUp.objects.filter(lead__organization=user.organization)
+        else:
+            queryset = FollowUp.objects.filter(lead__organization=user.agent.organization)
+            queryset = queryset.filter(lead__agent__user=user)
+        return queryset

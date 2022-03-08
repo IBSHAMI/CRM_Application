@@ -43,7 +43,50 @@
                             </a>
                         </div>
                     </div>
+                <hr class="mt-4"/>
+                <div class="container px-4 py-5" id="hanging-icons">
+                  <div class="d-flex justify-content-between list-inline my-3">
+                    <h3 class="list-inline-item">Follow ups List </h3>
+                    <a href="{% url 'leads:follow_up_create' lead.pk %}" class="btn btn-outline-primary list-inline-item">
+                      Create Follow up
+                    </a>
+                  </div>
+                {% if lead.followups %}
+                <div class="container py-2">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                            <table class="table table-striped table-hover table-bordered table-responsive my-4">
+                              <thead>
+                                <tr>
+                                  <th class="fw-normal text-uppercase" scope="col">Date Added</th>
+                                  <th class="fw-normal text-uppercase" scope="col">Comment</th>
+                                  <th class="fw-normal text-uppercase" scope="col">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for followup in lead.followups.all %}
+                                <tr>
+                                  <th class="fw-normal" scope="row"> {{ followup.date_added }} </th>
+                                  <td class="fw-normal" >{{ followup.comment }}</td>
+                                  <td class="fw-normal">
+                                  {% if followup.file %}
+                                    <a href="{{ followup.file.url }}" download class="btn btn-primary">
+                                      Download File
+                                    </a>
+                                  {% endif %}
+                                    <a href="{% url 'leads:follow_up_update' followup.pk %}" class="btn btn-primary">
+                                      Update
+                                    </a>
+                                    <a href="{% url 'leads:follow_up_delete' followup.pk %}" class="btn btn-primary">
+                                      Delete
+                                    </a>
+                                  </td>
+                                </tr>
+                              {% endfor %}
+                              </tbody>
+                            </table>
+                    </div>
                 </div>
+                {% endif %}
             </div>
         </section>
 {% endblock content %}

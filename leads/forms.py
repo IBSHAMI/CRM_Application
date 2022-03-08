@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from .models import Lead, User, Agent, Category
+from .models import Lead, User, Agent, Category, FollowUp
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -49,4 +49,13 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = (
             'name',
+        )
+
+# create new follow up by agent
+class FollowUpForm(forms.ModelForm):
+    class Meta:
+        model = FollowUp
+        fields = (
+            'comment',
+            'file',
         )

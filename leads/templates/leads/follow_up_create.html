@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="container">
+        <h2 class="text-center pt-4 pb-1 fw-bold">create follow_up </h2>
+        <h6 class="text-center fst-italic">create a follow_up for {{lead.first_name}} {{lead.last_name}} </h6>
+    <div class="d-flex pb-5 pt-2 justify-content-center">
+      <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-outline-primary my-3 w-50">Submit</button>
+      <hr />
+      <div>
+          <a href="{% url 'leads:lead_detail' lead.pk%}" class="w-100 btn btn-outline-secondary">Back to lead detail page</a>
+      </div>
+      </form>
+      </div>
+      </div>
+{% endblock content %}
