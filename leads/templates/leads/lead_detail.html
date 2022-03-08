@@ -7,7 +7,13 @@
             <div class="container px-4 px-lg-5 my-5">
                 <a href="{% url 'leads:leads_list' %}" class="btn btn-outline-secondary mb-5 flex-shrink-0"> Back to leads page</a>
                 <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img src="{% static 'images/lead_pic.jpg'%}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="600" height="700" loading="lazy"></div>
+                    <div class="col-md-6">
+                        {% if lead.profile_pic %}
+                        <img src="{{ lead.profile_pic.url }}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="600" height="700" loading="lazy">
+                        {% else %}
+                        <img src="{% static 'images/lead_pic.jpg'%}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="600" height="700" loading="lazy">
+                        {% endif %}
+                    </div>
                     <div class="col-md-6">
                         <div class="fw-bold fs-2 text-center mb-3 pb-3">Lead Details</div>
                         <div>

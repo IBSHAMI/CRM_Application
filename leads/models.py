@@ -30,9 +30,27 @@ class Lead(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     phone = models.CharField(max_length=50)
     email = models.EmailField()
+    profile_pic = models.ImageField(null=True, blank=True, upload_to='profile_pics/')
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+
+#  handle each file upload and save
+def handle_upload_follow_up(instance, filename):
+    return f'leads_followups/lead_{instance.lead.pk}/{filename}'
+
+
+class FollowUp(models.Model):
+    # we use related name here so we can access the leads from the follow up
+    # ex: lead.follow_ups.all() (which will fetch all the follow ups for that lead)
+    lead = models.ForeignKey(Lead, related_name='followups', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField(blank=True, null=True)
+    file = models.FileField(blank=True, null=True, upload_to=handle_upload_follow_up)
+
+    def __str__(self):
+        return self.lead.first_name + ' ' + self.lead.last_name
 
 
 # Agents model

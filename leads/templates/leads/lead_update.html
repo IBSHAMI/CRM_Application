@@ -13,7 +13,7 @@
 <article class="card-body mx-auto">
 <h4 class="card-title mt-3 text-center">Update Lead</h4>
 <p class="text-center mb-4 fw-normal">Use This form to update the lead information</p>
-<form method="post" action=".">
+<form method="post" action="." enctype="multipart/form-data">
   {% csrf_token %}
   {{ form|crispy }}
 <div class="form-group py-3">
