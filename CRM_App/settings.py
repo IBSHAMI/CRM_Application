@@ -10,7 +10,7 @@ BASE_DIR_ENV = os.path.join(Path(__file__).resolve().parent.parent, 'CRM_App')
 
 
 READ_DOT_ENV_FILE = env.bool("READ_DOT_ENV_FILE", default=False)
-if not READ_DOT_ENV_FILE:
+if READ_DOT_ENV_FILE:
     environ.Env.read_env(os.path.join(BASE_DIR_ENV, '.env'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

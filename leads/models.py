@@ -31,6 +31,7 @@ class Lead(models.Model):
     phone = models.CharField(max_length=50)
     email = models.EmailField()
     profile_pic = models.ImageField(null=True, blank=True, upload_to='profile_pics/')
+    converted_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name

@@ -13,10 +13,9 @@
         <div class="col-md-4">
           <div class="card p-3">
             <div class="card-block">
-              <h4 class="card-title text-center pb-1">Leads Added</h4>
-              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
-              <a href="#" class="card-link">Second link</a>
+              <h4 class="card-title text-center pb-1">Total Leads Added</h4>
+              <h3 class="card-subtitle text-center w-bold pb-2">{{ total_num_leads }}</h3>
+              <p class="card-text p-y-1 text-center">Total number of Leads added since the organization been made.</p>
             </div>
           </div>
         </div>
@@ -24,19 +23,17 @@
           <div class="card p-3">
             <div class="card-block">
               <h4 class="card-title text-center pb-1">Leads Converted</h4>
-              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
-              <a href="#" class="card-link">Second link</a>
+              <h3 class="card-subtitle text-center w-bold pb-2">{{ leads_converted }}</h3>
+              <p class="card-text p-y-1 text-center">Total number of Leads Converted in the last month.</p>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card p-3">
             <div class="card-block">
-              <h4 class="card-title text-center pb-1">Total Leads</h4>
-              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
-              <a href="#" class="card-link">Second link</a>
+              <h4 class="card-title text-center pb-1">Last month Leads</h4>
+              <h3 class="card-subtitle text-center w-boldf pb-2">{{ last_month_leads }}</h3>
+              <p class="card-text p-y-1 text-center">Total number of Leads added Last month.</p>
             </div>
           </div>
         </div>

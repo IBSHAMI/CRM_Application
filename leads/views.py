@@ -42,31 +42,39 @@ class LandingPageView(TemplateView):
 class DashboardView(OrganizerAndLoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(DashboardView, self).get_context_data(**kwargs)
-    #
-    #     user = self.request.user
-    #
-    #     # total number of leads
-    #     total_num_leads = Lead.objects.filter(organization=user.organization).count()
-    #
-    #     # total number of leads assigned added in the last month
-    #     month_ago = datetime.date.today() - datetime.timedelta(days=30)
-    #     last_month_leads = Lead.objects.filter(
-    #         organization=user.organization,
-    #         date_added__gte=month_ago
-    #     ).count()
-    #
-    #     # total number of leads converted in the last month
-    #     converted_categories = Category.objects.filter(
-    #         organization=user.organization,
-    #         name='Converted'
-    #     )
-    #     last_month_converted_leads = Lead.objects.filter(
-    #         organization=user.organization,
-    #         date_added__gte=month_ago,
-    #         category='Converted',
-    #     ).count()
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+
+        user = self.request.user
+
+        # total number of leads
+        total_num_leads = Lead.objects.filter(organization=user.organization).count()
+
+        # total number of leads assigned added in the last month
+        month_ago = datetime.date.today() - datetime.timedelta(days=30)
+        last_month_leads = Lead.objects.filter(
+            organization=user.organization,
+            date_added__gte=month_ago
+        ).count()
+
+        # total number of leads converted in the last month
+        converted_categories = Category.objects.get(
+            name='Converted'
+        )
+
+        leads_converted = Lead.objects.filter(
+            organization=user.organization,
+            category=converted_categories,
+            converted_date__gte=month_ago,
+        ).count()
+
+        context.update({
+            "total_num_leads": total_num_leads,
+            "last_month_leads": last_month_leads,
+            "leads_converted": leads_converted,
+        })
+
+        return context
 
 
 # Using class based views to create a list of leads page
@@ -278,6 +286,16 @@ class CategoryLeadUpdateView(LoginRequiredMixin, UpdateView):
             queryset = Lead.objects.filter(organization=user.agent.organization)
             queryset = queryset.filter(agent__user=user)
         return queryset
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        converted_category = Category.objects.get(name="Converted")
+        # update the lead converted date if this lead just been converted
+        if form.cleaned_data['category'] == converted_category:
+            if self.get_object().category != converted_category:
+                instance.converted_date = datetime.datetime.now()
+        instance.save()
+        return super(CategoryLeadUpdateView, self).form_valid(form)
 
 
 # create new category
